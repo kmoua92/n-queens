@@ -96,8 +96,8 @@
     },
 
     // test if any rows on this board contain conflicts
-    hasAnyRowConflicts: function() {
-      var board = this.rows(); // fixme
+    hasAnyRowConflicts: function(board) {
+      var board = board || this.rows(); // fixme
       var conflict = false;
 
       for (var i = 0; i < board.length; i++) {
@@ -116,12 +116,26 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+       // fixme
+      return this.hasAnyRowConflicts(colIndex);
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+      var board = this.rows();
+      var columns = [];
+      // loop through board
+        // board[i][0]
+      for (var y = 0; y < board.length; y ++) {
+        columns.push([]);
+      }
+      for (var i = 0; i < board.length; i++) {
+        for (var x = 0; x < board[i].length; x++) {
+          columns[x].push(board[i][x]);
+        }
+      }
+    
+      return this.hasAnyRowConflicts(columns);
     },
 
 
@@ -131,12 +145,55 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      var board = this.rows();
+      var coordinates = [];
+      var coordinateGiven = [majorDiagonalColumnIndexAtFirstRow, 1];
+      var conflict = false;
+
+      for (var y = 1; y < board.length; y++) {
+        for (var x = 0; x < board.length; x++) {
+          if (board[y][x] === 1) { 
+            coordinates.push([x, y]);
+          }
+        }
+      }
+
+      for (var i = 0; i < coordinates.length; i++) {
+        var xDist = coordinateGiven[0] - coordinates[i][0];
+        var yDist = coordinateGiven[1] - coordinates[i][1];
+        if (xDist === yDist) {
+          return conflict = true;
+        }
+      }
+
+      return conflict; // fixme
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
+      var board = this.rows();
+      var coordinates = [];
+      var conflict = false;
+
+      for (var y = 0; y < board.length; y++) {
+        for (var x = 0; x < board.length; x++) {
+          if (board[y][x] === 1) { 
+            coordinates.push([x, y]);
+          }
+        }
+      }
+
+      for (var i = 0; i < coordinates.length; i++) {
+        for (var j = i + 1; j < coordinates.length; j++) {
+          var xDist = coordinates[j][0] - coordinates[i][0];
+          var yDist = coordinates[j][1] - coordinates[i][1];
+          if (xDist === yDist) {
+            return conflict = true;
+          }
+        }
+      }
+
+      return conflict; // fixme
     },
 
 
@@ -146,12 +203,55 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      var board = this.rows();
+      var coordinates = [];
+      var coordinateGiven = [minorDiagonalColumnIndexAtFirstRow, 1];
+      var conflict = false;
+
+      for (var y = 1; y < board.length; y++) {
+        for (var x = 0; x < board.length; x++) {
+          if (board[y][x] === 1) { 
+            coordinates.push([x, y]);
+          }
+        }
+      }
+
+      for (var i = 0; i < coordinates.length; i++) {
+        var xDist = coordinateGiven[0] - coordinates[i][0];
+        var yDist = coordinateGiven[1] - coordinates[i][1];
+        if (xDist + yDist === 0) {
+          return conflict = true;
+        }
+      }
+
+      return conflict; // fixme
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      var board = this.rows();
+      var coordinates = [];
+      var conflict = false;
+      
+      for (var y = 0; y < board.length; y++) {
+        for (var x = 0; x < board.length; x++) {
+          if (board[y][x] === 1) { 
+            coordinates.push([x, y]);
+          }
+        }
+      }
+
+      for (var i = 0; i < coordinates.length; i++) {
+        for (var j = i + 1; j < coordinates.length; j++) {
+          var xDist = coordinates[j][0] - coordinates[i][0];
+          var yDist = coordinates[j][1] - coordinates[i][1];
+          if (xDist + yDist === 0) {
+            return conflict = true;
+          }
+        }
+      }
+
+      return conflict;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
